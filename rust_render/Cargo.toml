@@ -1,0 +1,10 @@
+[package]
+name = "rust_render"
+version = "0.1.0"
+authors = ["ashley"]
+
+[dependencies]
+gfx = "0.16"
+gfx_window_glutin = "0.17"
+glutin = "0.9"
+cgmath = "0.15.0"
