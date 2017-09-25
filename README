@@ -1,6 +1,6 @@
 2d render for rust that is similar to sfml 
 
-##To-DO
+# To-DO
 viewports
 rendering basic shapes
 Multiple viewports
