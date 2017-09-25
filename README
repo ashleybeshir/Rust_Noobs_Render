@@ -1,1 +1,10 @@
-Hello this just me learning rust by building a simple renderer similar to the three rs one. Dont use this for any projects please. Bad idea 
+2d render for rust that is similar to sfml 
+
+##To-DO
+viewports
+rendering basic shapes
+Multiple viewports
+Support for custom shape
+multi-threaded rendering
+font rendering
+
