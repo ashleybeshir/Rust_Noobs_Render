@@ -1,29 +1,46 @@
 
 use glutin;
-use gfx;
-use gfx::traits::FactoryExt;
-use gfx::Device;
-use gfx_window_glutin as gfx_glutin;
+use glutin::GlContext;
+use renderer;
 
-pub type ColorFormat = gfx::format::Srgba8;
-pub type DepthFormat = gfx::format::DepthStencil;
 
-struct Window {
+pub struct Window {
     event_loop : glutin::EventsLoop,
     window     : glutin::GlWindow,
-    device     : Device,
+    renderer : renderer::Renderer,
 
 }
 
 impl Window{
-    //efffefeerffr
-    pub fn new(x : u32,y : u32,name : &str)-> Window{
+
+    pub fn new<T:Into<String>>(title : T,width : u32,height : u32,fullscreen : bool,vsync : bool)-> Self{
         let events_loop = glutin::EventsLoop::new();
-        let builder = glutin::WindowBuilder::new()
-            .with_title(name)
-            .with_dimensions(x, y);
-        let context = glutin::ContextBuilder::new();
-        let (window, mut device, mut factory, main_color, mut main_depth) =
-            gfx_glutin::init::<ColorFormat, DepthFormat>(builder, context,&events_loop);
+
+        let builder = if fullscreen {
+            glutin::WindowBuilder::new().with_fullscreen(glutin::get_primary_monitor())
+        } else {
+            glutin::WindowBuilder::new()
+        };
+
+        let builder = builder.clone()
+            .with_dimensions(width, height)
+            .with_title(title.into());
+
+        let context = glutin::ContextBuilder::new()
+            .with_vsync(vsync)
+            .with_multisampling(0);
+
+        let (renderer,window) =  renderer::Renderer::new(builder,context,&events_loop);
+        Window{event_loop : events_loop,window : window, renderer: renderer}
+
     }
+    pub fn get_events(&mut self)-> &mut glutin::EventsLoop{
+        self.window.swap_buffers().unwrap();
+        return &mut self.event_loop;
+    }
+    pub fn render(&mut self)
+    {
+        self.renderer.render();
+    }
+
 }
