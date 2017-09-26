@@ -5,12 +5,12 @@ Uses glutin for window and gfx rs for rendering.
 Making a high abstraction library for 2d games. 
 
 ### To-Do(can change)
-* [] Simplified window system
-* [] Camera System
-* [] Basic Shape support
-* [] Sprite support
-* [] Custom Shape support
-* [] Colour support
-* [] Texture support
-* [] Multiple camera support
+* [ ] Simplified window system
+* [ ] Camera System
+* [ ] Basic Shape support
+* [ ] Sprite support
+* [ ] Custom Shape support
+* [ ] Colour support
+* [ ] Texture support
+* [ ] Multiple camera support
 
