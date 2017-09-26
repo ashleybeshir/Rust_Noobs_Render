@@ -6,6 +6,7 @@ Making a high abstraction library for 2d games.
 
 ### To-Do(can change)
 * [ ] Simplified window system
+* [ ] Basic Input System(will allow a way to get raw input for advance use)
 * [ ] Camera System
 * [ ] Basic Shape support
 * [ ] Sprite support
