@@ -1,8 +1,10 @@
 # 2D renderer for Rust
 This a 2d renderer that is similar to sfml.
 Uses glutin for window and gfx rs for rendering.
+## Purpose of this cargo
+Making a high abstraction library for simple 2d games. 
 
-## To-Do(can change)
+### To-Do(can change)
 1. Simplified window system
 2. Camera System
 3. Basic Shape support
