@@ -34,9 +34,10 @@ impl Window{
         Window{event_loop : events_loop,window : window, renderer: renderer}
 
     }
-    pub fn get_events(&mut self)-> &mut glutin::EventsLoop{
+    pub fn get_events(&mut self){
         self.window.swap_buffers().unwrap();
-        return &mut self.event_loop;
+        
+
     }
     pub fn render(&mut self)
     {

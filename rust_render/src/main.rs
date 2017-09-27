@@ -11,20 +11,13 @@ extern crate glutin;
 
 mod renderer;
 mod window;
+mod input;
 
 fn main() {
-    let mut window = window::Window::new("test",800,600,false,false);
+    let mut window = window::Window::new("wtf",800,600,false,false);
     loop{
-        let events = window.get_events();
-        /*events.poll_events(|glutin::Event::WindowEvent{window_id: _, event}|{
-            use glutin::WindowEvent::*;
-            match event {
-                KeyboardInput(_, _, Some(glutin::VirtualKeyCode::Escape), _)
-                | Closed => println!("close"),
+        //window.get_events();
 
-                _ => (),
-            }
-        } );*/
         window.render();
     }
     println!("Hello, world!");
