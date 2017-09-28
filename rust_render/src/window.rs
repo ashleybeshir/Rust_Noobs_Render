@@ -13,7 +13,7 @@ pub struct Window {
 }
 
 impl Window{
-
+    //Creates and returns a window depending on given constructs
     pub fn new<T:Into<String>>(title : T,width : u32,height : u32,fullscreen : bool,vsync : bool)-> Self{
         let events_loop = glutin::EventsLoop::new();
 
@@ -35,6 +35,7 @@ impl Window{
         Window{event_loop : events_loop,window : window, renderer: renderer , input : input::Input::new(), running : true,}
 
     }
+    //Retrieves all events and sends them to input struct
     pub fn get_events(&mut self){
         let input = &mut self.input;
         let running = &mut self.running;
@@ -53,6 +54,17 @@ impl Window{
                             virtual_keycode : Some(keycode),..
                         },..
                     } => input.add_key(state,keycode),
+                    MouseInput {
+                        state,
+                        button,..
+                    } => input.add_button(state,button),
+                    MouseWheel {
+                        delta,..
+                    } => input.add_mouse_wheel(delta),
+                    MouseMoved {
+                        position: (x,y),
+                        ..
+                    } => input.add_mouse_position(x as f32,y as f32),
 
                     _ => ()
                 },

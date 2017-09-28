@@ -17,10 +17,10 @@ fn main() {
     let mut window = window::Window::new("Test Screen",800,600,false,false);
     while window.running{
         window.get_events();
-        if window.input.is_pressed(glutin::VirtualKeyCode::A){
+        if window.input.is_key_pressed(glutin::VirtualKeyCode::A){
             println!("A is pressed");
         }
-        if window.input.is_released(glutin::VirtualKeyCode::A){
+        if window.input.is_key_released(glutin::VirtualKeyCode::A){
             println!("A is realeased");
         }
 
