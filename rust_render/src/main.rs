@@ -14,9 +14,15 @@ mod window;
 mod input;
 
 fn main() {
-    let mut window = window::Window::new("wtf",800,600,false,false);
-    loop{
-        //window.get_events();
+    let mut window = window::Window::new("Test Screen",800,600,false,false);
+    while window.running{
+        window.get_events();
+        if window.input.is_pressed(glutin::VirtualKeyCode::A){
+            println!("A is pressed");
+        }
+        if window.input.is_released(glutin::VirtualKeyCode::A){
+            println!("A is realeased");
+        }
 
         window.render();
     }

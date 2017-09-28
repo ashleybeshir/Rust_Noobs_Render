@@ -5,7 +5,6 @@ use std::collections::HashSet;
 pub struct Input{
     pressed  : HashSet<glutin::VirtualKeyCode>,
     released : HashSet<glutin::VirtualKeyCode>,
-    temp : HashSet<glutin::VirtualKeyCode>,
 }
 
 impl Input{
@@ -13,11 +12,25 @@ impl Input{
         Input {
             pressed: HashSet::new(),
             released: HashSet::new(),
-            temp : HashSet::new(),
         }
     }
-    pub fn add_key(&mut self,key : glutin::VirtualKeyCode){
-        self.temp.insert(key);
+    pub fn clear(&mut self){
+        self.released.clear();
+        self.pressed.clear();
     }
+    pub fn add_key(&mut self,state : glutin::ElementState,key : glutin::VirtualKeyCode){
+        if state == glutin::ElementState::Pressed {
+            self.pressed.insert(key);
+        }else { self.released.insert(key); }
+    }
+    pub fn is_pressed(&mut self,key : glutin::VirtualKeyCode)->bool{
+        return self.pressed.contains(&key);
+
+    }
+    pub fn is_released(&mut self,key : glutin::VirtualKeyCode)->bool{
+        return self.released.contains(&key);
+
+    }
+
 
 }

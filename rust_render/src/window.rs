@@ -2,13 +2,14 @@
 use glutin;
 use glutin::GlContext;
 use renderer;
-
+use input;
 
 pub struct Window {
     event_loop : glutin::EventsLoop,
     window     : glutin::GlWindow,
     renderer : renderer::Renderer,
-
+    pub input : input::Input,
+    pub running : bool
 }
 
 impl Window{
@@ -31,12 +32,33 @@ impl Window{
             .with_multisampling(0);
 
         let (renderer,window) =  renderer::Renderer::new(builder,context,&events_loop);
-        Window{event_loop : events_loop,window : window, renderer: renderer}
+        Window{event_loop : events_loop,window : window, renderer: renderer , input : input::Input::new(), running : true,}
 
     }
     pub fn get_events(&mut self){
+        let input = &mut self.input;
+        let running = &mut self.running;
+
         self.window.swap_buffers().unwrap();
-        
+        input.clear();
+        self.event_loop.poll_events(|event| {
+            use glutin::WindowEvent::{Resized, Closed, KeyboardInput, MouseInput, MouseMoved, MouseWheel};
+            match event {
+                glutin::Event::WindowEvent{ event, .. } => match event {
+
+                    Closed => *running = false,
+                    KeyboardInput {
+                        input : glutin::KeyboardInput{
+                            state,
+                            virtual_keycode : Some(keycode),..
+                        },..
+                    } => input.add_key(state,keycode),
+
+                    _ => ()
+                },
+                _ => ()
+            }
+        });
 
     }
     pub fn render(&mut self)
