@@ -5,8 +5,8 @@ Uses glutin for window and gfx rs for rendering.
 Making a high abstraction library for 2d games. 
 
 ### To-Do(can change)
-* [ ] Simplified window system
-* [ ] Basic Input System(will allow a way to get raw input for advance use)
+* [x] Simplified window system 
+* [ ] Basic Input System(keyboard support is added. next is mouse)
 * [ ] Camera System
 * [ ] Basic Shape support
 * [ ] Sprite support
