@@ -1,13 +1,16 @@
 
 use glutin;
 use glutin::GlContext;
+use gfx_device_gl;
 use renderer;
 use input;
+use object::Object;
 
 pub struct Window {
     event_loop : glutin::EventsLoop,
     window     : glutin::GlWindow,
     renderer : renderer::Renderer,
+    factory : gfx_device_gl::Factory,
     pub input : input::Input,
     pub running : bool
 }
@@ -31,8 +34,8 @@ impl Window{
             .with_vsync(vsync)
             .with_multisampling(0);
 
-        let (renderer,window) =  renderer::Renderer::new(builder,context,&events_loop);
-        Window{event_loop : events_loop,window : window, renderer: renderer , input : input::Input::new(), running : true,}
+        let (renderer,window,factory) =  renderer::Renderer::new(builder,context,&events_loop);
+        Window{event_loop : events_loop,window : window, renderer: renderer , input : input::Input::new(), running : true,factory : factory}
 
     }
     //Retrieves all events and sends them to input struct
@@ -73,8 +76,11 @@ impl Window{
         });
 
     }
-    pub fn render(&mut self)
+    pub fn render(&mut self,mut object : &Object)
     {
+        if object.update == true{
+
+        }
         self.renderer.render();
     }
 

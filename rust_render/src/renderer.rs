@@ -15,7 +15,7 @@ pub type DepthFormat = gfx::format::DepthStencil;
 gfx_defines! {
     vertex Vertex {
         pos: [f32; 2] = "a_Pos",
-        color: [f32; 3] = "a_Color",
+
         uv: [f32;2] = "a_Uv",
     }
     constant Locals{
@@ -29,12 +29,7 @@ gfx_defines! {
         out: gfx::RenderTarget<ColorFormat> = "Target0",
     }
 }
-const WHITE: [f32; 3] = [1.0, 1.0, 1.0];
-const SQUARE: [Vertex; 3] = [
-    Vertex { pos: [0.5, -0.5], color: WHITE , uv: [0.0,0.0]},
-    Vertex { pos: [-0.5, -0.5], color: WHITE , uv: [0.0,0.0]},
-    Vertex { pos: [-0.5, 0.5], color: WHITE ,uv: [0.0,0.0]}
-];
+
 #[derive(Clone, Debug)]
 pub struct GpuData{
     slice : gfx::Slice<gfx_device_gl::Resources>,
@@ -42,7 +37,6 @@ pub struct GpuData{
 
 }
 pub struct Renderer{
-    factory : gfx_device_gl::Factory,
     device: gfx_device_gl::Device,
     encoder: gfx::Encoder<gfx_device_gl::Resources, gfx_device_gl::CommandBuffer>,
     out_color: gfx::handle::RenderTargetView<gfx_device_gl::Resources, ColorFormat>,
@@ -52,7 +46,7 @@ pub struct Renderer{
 }
 impl Renderer{
     #[cfg(feature = "opengl")]
-    pub fn new(builder: glutin::WindowBuilder,context: glutin::ContextBuilder,event_loop: &glutin::EventsLoop) -> (Self,glutin::GlWindow){
+    pub fn new(builder: glutin::WindowBuilder,context: glutin::ContextBuilder,event_loop: &glutin::EventsLoop) -> (Self,glutin::GlWindow,gfx_device_gl::Factory){
         let (window, device, mut factory, color, depth) =
             gfx_window_glutin::init(builder, context, event_loop);
         let basic_pos = factory.create_pipeline_simple(
@@ -66,11 +60,11 @@ impl Renderer{
             out_color : color,
             out_depth : depth,
             basic_shape_pso : basic_pos,
-            factory : factory,
+
         };
 
 
-        return (renderer,window);
+        return (renderer,window,factory);
 
 
     }
@@ -82,7 +76,7 @@ impl Renderer{
             out: self.out_color.clone(),
         };*/
 
-        self.encoder.clear(&data.out, [0.0, 0.0, 0.0, 1.0]);
+        //self.encoder.clear(&data.out, [0.0, 0.0, 0.0, 1.0]);
       //  self.encoder.draw(&slice,&self.basic_shape_pso,&data);
         self.encoder.flush(&mut self.device);
         self.device.cleanup();

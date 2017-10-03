@@ -12,6 +12,8 @@ extern crate glutin;
 mod renderer;
 mod window;
 mod input;
+mod object;
+
 
 fn main() {
     let mut window = window::Window::new("Test Screen",800,600,false,false);
