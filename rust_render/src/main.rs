@@ -26,7 +26,8 @@ fn main() {
             println!("A is realeased");
         }
 
-        window.render();
+       // window.render();
+        window.display();
     }
     println!("Hello, world!");
 }

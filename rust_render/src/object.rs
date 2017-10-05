@@ -15,16 +15,29 @@ mod Shape{
 }
 
 pub struct Object{
-    vertexdata : Vec<renderer::Vertex>,
-    gpudata:Option<renderer::GpuData>,
+    pub vertexdata : Vec<renderer::Vertex>,
+    pub gpudata: renderer::GpuData,
     pub update : bool,
     position : Vector2<f32>,
     roation : u8,
-    color : [f32;3],
+    color : [f32;4],
 }
 impl Object{
     pub fn new(vertexdata : Vec<renderer::Vertex>)->Self{
-        Object{vertexdata:vertexdata,gpudata:None,update : true,position:Vector2::new(0.0,0.0), roation:0,color:[1.0,1.0,1.0]}
+        Object{vertexdata:vertexdata,gpudata: renderer::GpuData{slice:None,vertices:None,constants:None},update:true,position:Vector2::new(0.0,0.0), roation:0,color:[1.0,1.0,1.0,1.0]}
+    }
+    pub fn set_position(&mut self,x : f32,y: f32) {
+        self.position.x = x;
+        self.position.y = y;
+    }
+    pub fn get_position(&self) ->(f32,f32) {
+        return (self.position.x,self.position.y);
+    }
+    pub fn set_color(&mut self,color: [f32;4]){
+        self.color = color;
+    }
+    pub fn get_color(&self)->[f32;4]{
+        return self.color;
     }
 }
 

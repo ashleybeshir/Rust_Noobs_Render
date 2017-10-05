@@ -8,6 +8,8 @@ use gfx_window_glutin;
 use glutin;
 use gfx::Device;
 use gfx::traits::FactoryExt;
+use cgmath;
+use object::Object;
 
 pub type ColorFormat = gfx::format::Srgba8;
 pub type DepthFormat = gfx::format::DepthStencil;
@@ -15,12 +17,14 @@ pub type DepthFormat = gfx::format::DepthStencil;
 gfx_defines! {
     vertex Vertex {
         pos: [f32; 2] = "a_Pos",
-
         uv: [f32;2] = "a_Uv",
     }
     constant Locals{
         color: [f32;4] = "l_Color",
-
+       /* uv_range: [f32;4] = "l_Uv",
+        proj: [[f32;4];4] = "l_Pro",
+        model: [[f32;4];4] = "l_Mod",
+        view: [[f32;4];4] = "l_View",*/
     }
 
     pipeline pipe {
@@ -32,16 +36,18 @@ gfx_defines! {
 
 #[derive(Clone, Debug)]
 pub struct GpuData{
-    slice : gfx::Slice<gfx_device_gl::Resources>,
-    vertices : gfx::handle::Buffer<gfx_device_gl::Resources,Vertex>,
+    pub slice : Option<gfx::Slice<gfx_device_gl::Resources>>,
+    pub vertices : Option<gfx::handle::Buffer<gfx_device_gl::Resources,Vertex>>,
+    pub constants: Option<gfx::handle::Buffer<gfx_device_gl::Resources, Locals>>,
 
 }
 pub struct Renderer{
     device: gfx_device_gl::Device,
-    encoder: gfx::Encoder<gfx_device_gl::Resources, gfx_device_gl::CommandBuffer>,
-    out_color: gfx::handle::RenderTargetView<gfx_device_gl::Resources, ColorFormat>,
+    pub encoder: gfx::Encoder<gfx_device_gl::Resources, gfx_device_gl::CommandBuffer>,
+    pub out_color: gfx::handle::RenderTargetView<gfx_device_gl::Resources, ColorFormat>,
     out_depth: gfx::handle::DepthStencilView<gfx_device_gl::Resources, DepthFormat>,
     basic_shape_pso : gfx::PipelineState<gfx_device_gl::Resources, pipe::Meta>,
+    proj : cgmath::Matrix4<f32>,
 
 }
 impl Renderer{
@@ -60,6 +66,7 @@ impl Renderer{
             out_color : color,
             out_depth : depth,
             basic_shape_pso : basic_pos,
+            proj : cgmath::ortho(0.0,800.0,600.0,0.0,1.0,100.0),
 
         };
 
@@ -68,20 +75,26 @@ impl Renderer{
 
 
     }
-    pub fn render(&mut self)
+    pub fn render(&mut self,object : &mut Object)
     {
-        /*let (vertex_buffer, slice) = self.factory.create_vertex_buffer_with_slice(&SQUARE, ());
-        let mut data = pipe::Data {
-            vbuf: vertex_buffer,
-            out: self.out_color.clone(),
-        };*/
+        //let model = cgmath::Matrix4::from_translation(cgmath::Vector3(0.0,0.0,1.0));
+        let gpudata = &object.gpudata;
+        self.encoder.update_constant_buffer(&gpudata.constants.unwrap(),&Locals{color:object.get_color()});
+        let data = pipe::Data{
+            vbuf : gpudata.vertices.unwrap().clone(),
+            locals : gpudata.constants.unwrap().clone(),
+            out : self.out_color.clone(),
+        };
+       // self.encoder.clear(&data.out, );
+        self.encoder.draw(&gpudata.slice.unwrap(),&self.basic_shape_pso,&data);
 
-        //self.encoder.clear(&data.out, [0.0, 0.0, 0.0, 1.0]);
-      //  self.encoder.draw(&slice,&self.basic_shape_pso,&data);
+
+
+    }
+    pub fn display(&mut self)
+    {
         self.encoder.flush(&mut self.device);
         self.device.cleanup();
-        //window.swap_buffers().unwrap();
-
     }
 
 }

@@ -3,8 +3,11 @@ use glutin;
 use glutin::GlContext;
 use gfx_device_gl;
 use renderer;
+use renderer::Locals;
 use input;
 use object::Object;
+use gfx::traits::FactoryExt;
+use gfx;
 
 pub struct Window {
     event_loop : glutin::EventsLoop,
@@ -74,14 +77,26 @@ impl Window{
                 _ => ()
             }
         });
+        self.renderer.encoder.clear(&self.renderer.out_color,[0.0, 0.0, 0.0, 1.0]);
 
     }
-    pub fn render(&mut self,mut object : &Object)
+    pub fn render(&mut self,object : &mut Object)
     {
         if object.update == true{
-
+            if object.gpudata.constants.is_none() {
+                let con : gfx::handle::Buffer<gfx_device_gl::Resources, Locals>  = self.factory.create_constant_buffer(1);
+                object.gpudata.constants = Some(con);
+            }
+            let con : gfx::handle::Buffer<gfx_device_gl::Resources, Locals>  = self.factory.create_constant_buffer(1);
+            let (vertex ,slice) = self.factory.create_vertex_buffer_with_slice(object.vertexdata.as_slice(),());
+            object.gpudata.vertices = Some(vertex);
+            object.gpudata.slice = Some(slice);
+            object.update = false;
         }
-        self.renderer.render();
+        self.renderer.render(object);
+    }
+    pub fn display(&mut self){
+        self.renderer.display();
     }
 
 }
