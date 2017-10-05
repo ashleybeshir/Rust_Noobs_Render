@@ -30,7 +30,7 @@ gfx_defines! {
     pipeline pipe {
         vbuf: gfx::VertexBuffer<Vertex> = (),
         locals: gfx::ConstantBuffer<Locals> = "b_Locals",
-        out: gfx::RenderTarget<ColorFormat> = "Target0",
+        out: gfx::BlendTarget<ColorFormat> = ("Target0", gfx::state::MASK_ALL, gfx::preset::blend::ALPHA),
     }
 }
 
@@ -97,6 +97,16 @@ impl Renderer{
     {
         self.encoder.flush(&mut self.device);
         self.device.cleanup();
+    }
+    pub fn resize(&mut self, window: &glutin::GlWindow){
+        let size = window.get_inner_size_pixels().unwrap();
+
+        if size.0 == 0 || size.1 == 0 {
+            return
+        }
+
+
+        gfx_window_glutin::update_views(window, &mut self.out_color, &mut self.out_depth);
     }
 
 }

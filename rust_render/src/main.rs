@@ -17,15 +17,16 @@ mod object;
 
 fn main() {
     let mut window = window::Window::new("Test Screen",800,600,false,false);
+    let mut quad = object::Object::new(object::Shape::create_rectangle(400.0,400.0));
     while window.running{
         window.get_events();
-        if window.input.is_key_pressed(glutin::VirtualKeyCode::A){
-            println!("A is pressed");
+        if window.input.is_key_pressed(glutin::VirtualKeyCode::O){
+           quad.set_opacity(0.2);
         }
         if window.input.is_key_released(glutin::VirtualKeyCode::A){
-            println!("A is realeased");
+            quad.set_color([0.5,0.0,0.0]);
         }
-
+        window.render(&mut quad);
        // window.render();
         window.display();
     }

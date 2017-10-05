@@ -43,8 +43,10 @@ impl Window{
     }
     //Retrieves all events and sends them to input struct
     pub fn get_events(&mut self){
+        let renderer = &mut self.renderer;
         let input = &mut self.input;
         let running = &mut self.running;
+        let window = &self.window;
 
         self.window.swap_buffers().unwrap();
         input.clear();
@@ -54,6 +56,7 @@ impl Window{
                 glutin::Event::WindowEvent{ event, .. } => match event {
 
                     Closed => *running = false,
+                    Resized(..)=> renderer.resize(&window),
                     KeyboardInput {
                         input : glutin::KeyboardInput{
                             state,
@@ -77,7 +80,7 @@ impl Window{
                 _ => ()
             }
         });
-        self.renderer.encoder.clear(&self.renderer.out_color,[0.0, 0.0, 0.0, 1.0]);
+        renderer.encoder.clear(&renderer.out_color,[0.0, 0.0, 0.0, 1.0]);
 
     }
     pub fn render(&mut self,object : &mut Object)
