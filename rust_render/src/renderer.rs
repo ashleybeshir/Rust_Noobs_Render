@@ -78,15 +78,17 @@ impl Renderer{
     pub fn render(&mut self,object : &mut Object)
     {
         //let model = cgmath::Matrix4::from_translation(cgmath::Vector3(0.0,0.0,1.0));
-        let gpudata = &object.gpudata;
-        self.encoder.update_constant_buffer(&gpudata.constants.unwrap(),&Locals{color:object.get_color()});
+        let constant = object.gpudata.constants.as_ref().unwrap();
+        let vertices = object.gpudata.vertices.as_ref().unwrap();
+        let slice = object.gpudata.slice.as_ref().unwrap();
+        self.encoder.update_constant_buffer(constant,&Locals{color:object.get_color()});
         let data = pipe::Data{
-            vbuf : gpudata.vertices.unwrap().clone(),
-            locals : gpudata.constants.unwrap().clone(),
+            vbuf : vertices.clone(),
+            locals : constant.clone(),
             out : self.out_color.clone(),
         };
        // self.encoder.clear(&data.out, );
-        self.encoder.draw(&gpudata.slice.unwrap(),&self.basic_shape_pso,&data);
+        self.encoder.draw(slice,&self.basic_shape_pso,&data);
 
 
 
