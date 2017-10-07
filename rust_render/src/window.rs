@@ -8,6 +8,7 @@ use input;
 use object::Object;
 use gfx::traits::FactoryExt;
 use gfx;
+use camera::Camera;
 
 pub struct Window {
     event_loop : glutin::EventsLoop,
@@ -100,6 +101,9 @@ impl Window{
     }
     pub fn display(&mut self){
         self.renderer.display();
+    }
+    pub fn set_camera(&mut self,camera : &Camera){
+
     }
 
 }

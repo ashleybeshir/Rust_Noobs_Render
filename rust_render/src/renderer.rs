@@ -10,6 +10,7 @@ use gfx::Device;
 use gfx::traits::FactoryExt;
 use cgmath;
 use object::Object;
+use camera::Camera;
 
 pub type ColorFormat = gfx::format::Srgba8;
 pub type DepthFormat = gfx::format::DepthStencil;
@@ -21,10 +22,10 @@ gfx_defines! {
     }
     constant Locals{
         color: [f32;4] = "l_Color",
-       /* uv_range: [f32;4] = "l_Uv",
+        //uv_range: [f32;4] = "l_Uv",
         proj: [[f32;4];4] = "l_Pro",
         model: [[f32;4];4] = "l_Mod",
-        view: [[f32;4];4] = "l_View",*/
+        view: [[f32;4];4] = "l_View",
     }
 
     pipeline pipe {
@@ -48,6 +49,7 @@ pub struct Renderer{
     out_depth: gfx::handle::DepthStencilView<gfx_device_gl::Resources, DepthFormat>,
     basic_shape_pso : gfx::PipelineState<gfx_device_gl::Resources, pipe::Meta>,
     proj : cgmath::Matrix4<f32>,
+    view : cgmath::Matrix4<f32>,
 
 }
 impl Renderer{
@@ -66,8 +68,8 @@ impl Renderer{
             out_color : color,
             out_depth : depth,
             basic_shape_pso : basic_pos,
-            proj : cgmath::ortho(0.0,800.0,600.0,0.0,1.0,100.0),
-
+            proj : cgmath::ortho(0.0,800.0,600.0,0.0,0.0,100.0),
+            view : cgmath::Matrix4::from_translation(cgmath::Vector3::new(0.0,0.0,0.0)),
         };
 
 
@@ -78,10 +80,16 @@ impl Renderer{
     pub fn render(&mut self,object : &mut Object)
     {
         //let model = cgmath::Matrix4::from_translation(cgmath::Vector3(0.0,0.0,1.0));
+        let model = cgmath::Matrix4::from_translation(object.position);
         let constant = object.gpudata.constants.as_ref().unwrap();
         let vertices = object.gpudata.vertices.as_ref().unwrap();
         let slice = object.gpudata.slice.as_ref().unwrap();
-        self.encoder.update_constant_buffer(constant,&Locals{color:object.get_color()});
+        self.encoder.update_constant_buffer(constant,&Locals{
+            color:object.get_color(),
+            proj : self.proj.into(),
+            model : model.into(),
+            view : self.view.into(),
+        });
         let data = pipe::Data{
             vbuf : vertices.clone(),
             locals : constant.clone(),
@@ -107,6 +115,10 @@ impl Renderer{
 
 
         gfx_window_glutin::update_views(window, &mut self.out_color, &mut self.out_depth);
+    }
+    pub fn set_camera(&mut self,camera : &Camera){
+        self.proj = camera.projection;
+        self.view = cgmath::Matrix4::from_translation(camera.position);
     }
 
 }

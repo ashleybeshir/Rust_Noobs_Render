@@ -13,11 +13,16 @@ mod renderer;
 mod window;
 mod input;
 mod object;
+mod camera;
+use camera::Camera;
 
+const width:u32 = 800;
+const height:u32 = 600;
 
 fn main() {
-    let mut window = window::Window::new("Test Screen",800,600,false,false);
-    let mut quad = object::Object::new(object::Shape::create_rectangle(400.0,400.0));
+    let mut window = window::Window::new("Test Screen",width,height,false,false);
+    let mut camera : Camera = Camera::new(width,height);
+    let mut quad = object::Object::new(object::Shape::create_rectangle(8000.0,8000.0));
     while window.running{
         window.get_events();
         if window.input.is_key_pressed(glutin::VirtualKeyCode::O){
@@ -26,6 +31,7 @@ fn main() {
         if window.input.is_key_released(glutin::VirtualKeyCode::A){
             quad.set_color([0.5,0.0,0.0]);
         }
+        window.set_camera(&camera);
         window.render(&mut quad);
        // window.render();
         window.display();
