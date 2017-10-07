@@ -3,8 +3,8 @@ use cgmath::{Vector2,Vector3};
 
 pub mod Shape{
     use super::renderer::Vertex;
-    pub fn create_rectangle(height: f32,width: f32)->Vec<Vertex>{
-        return vec![Vertex{pos: [1.0, -1.0],uv : [1.0, 1.0]},Vertex{pos: [-1.0, -1.0],uv : [1.0, 1.0]},Vertex { pos: [-1.0, 1.0],uv : [1.0, 1.0]},Vertex { pos: [-1.0, 1.0],uv : [1.0, 1.0]},Vertex { pos: [1.0, 1.0],uv : [1.0, 1.0]},Vertex { pos: [1.0, -1.0],uv : [1.0, 1.0]}];
+    pub fn create_rectangle(width: f32,height: f32)->Vec<Vertex>{
+        return vec![Vertex{pos: [width*1.0, height*-1.0],uv : [1.0, 1.0]},Vertex{pos: [width*-1.0, height*-1.0],uv : [1.0, 1.0]},Vertex { pos: [width*-1.0, height*1.0],uv : [1.0, 1.0]},Vertex { pos: [width*-1.0, height*1.0],uv : [1.0, 1.0]},Vertex { pos: [width*1.0, height*1.0],uv : [1.0, 1.0]},Vertex { pos: [width*1.0, height*-1.0],uv : [1.0, 1.0]}];
     }
     pub fn create_triangle(height:f32,width:f32)->Vec<super::renderer::Vertex>{
 
@@ -26,7 +26,7 @@ pub struct Object{
 }
 impl Object{
     pub fn new(vertexdata : Vec<renderer::Vertex>)->Self{
-        Object{vertexdata:vertexdata,gpudata: renderer::GpuData{slice:None,vertices:None,constants:None},update:true,position:Vector3::new(0.0,0.0,1.0), roation:0,color:[1.0,1.0,1.0,1.0],scale:Vector2::new(1.0,1.0)}
+        Object{vertexdata:vertexdata,gpudata: renderer::GpuData{slice:None,vertices:None,constants:None},update:true,position:Vector3::new(0.0,0.0,-1.0), roation:0,color:[1.0,1.0,1.0,1.0],scale:Vector2::new(1.0,1.0)}
     }
     pub fn set_position(&mut self,x : f32,y: f32) {
         self.position.x = x;

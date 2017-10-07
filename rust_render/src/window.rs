@@ -91,7 +91,6 @@ impl Window{
                 let con : gfx::handle::Buffer<gfx_device_gl::Resources, Locals>  = self.factory.create_constant_buffer(1);
                 object.gpudata.constants = Some(con);
             }
-            let con : gfx::handle::Buffer<gfx_device_gl::Resources, Locals>  = self.factory.create_constant_buffer(1);
             let (vertex ,slice) = self.factory.create_vertex_buffer_with_slice(object.vertexdata.as_slice(),());
             object.gpudata.vertices = Some(vertex);
             object.gpudata.slice = Some(slice);

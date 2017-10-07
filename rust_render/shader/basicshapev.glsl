@@ -14,5 +14,5 @@ uniform b_Locals{
 
 void main() {
     v_Color = l_Color;
-    gl_Position = l_Pro* l_View * l_Mod * vec4(a_Pos, 0.0, 1.0);
+    gl_Position = l_Pro*l_View * l_Mod * vec4(a_Pos, 0.0, 1.0);
 }

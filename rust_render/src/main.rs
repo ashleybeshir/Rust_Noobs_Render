@@ -16,18 +16,21 @@ mod object;
 mod camera;
 use camera::Camera;
 
-const width:u32 = 800;
-const height:u32 = 600;
+const WIDTH:u32 = 800;
+const HEIGHT:u32 = 600;
 
 fn main() {
-    let mut window = window::Window::new("Test Screen",width,height,false,false);
-    let mut camera : Camera = Camera::new(width,height);
-    let mut quad = object::Object::new(object::Shape::create_rectangle(8000.0,8000.0));
+    let mut window = window::Window::new("Test Screen",WIDTH,HEIGHT,false,false);
+    let mut camera : Camera = Camera::new(WIDTH,HEIGHT);
+    let mut quad = object::Object::new(object::Shape::create_rectangle(1.0,1.0));
+    quad.set_position(400.0,300.0);
     while window.running{
         window.get_events();
-        if window.input.is_key_pressed(glutin::VirtualKeyCode::O){
-           quad.set_opacity(0.2);
+
+        if window.input.get_mouse_scroll() < 0.0 {
+            println!("gracias");
         }
+
         if window.input.is_key_released(glutin::VirtualKeyCode::A){
             quad.set_color([0.5,0.0,0.0]);
         }
