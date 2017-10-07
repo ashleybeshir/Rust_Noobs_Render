@@ -68,7 +68,7 @@ impl Renderer{
             out_color : color,
             out_depth : depth,
             basic_shape_pso : basic_pos,
-            proj : cgmath::ortho(0.0,800.0,600.0,0.0,0.0,100.0),
+            proj : cgmath::ortho(800.0,0.0,0.0,600.0,0.0,100.0),
             view : cgmath::Matrix4::from_translation(cgmath::Vector3::new(0.0,0.0,0.0)),
         };
 
@@ -79,7 +79,6 @@ impl Renderer{
     }
     pub fn render(&mut self,object : &mut Object)
     {
-        //let model = cgmath::Matrix4::from_translation(cgmath::Vector3(0.0,0.0,1.0));
         let model = cgmath::Matrix4::from_translation(object.position);
         let constant = object.gpudata.constants.as_ref().unwrap();
         let vertices = object.gpudata.vertices.as_ref().unwrap();

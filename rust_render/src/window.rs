@@ -102,7 +102,7 @@ impl Window{
         self.renderer.display();
     }
     pub fn set_camera(&mut self,camera : &Camera){
-
+        self.renderer.set_camera(&camera);
     }
 
 }

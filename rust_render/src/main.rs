@@ -27,16 +27,18 @@ fn main() {
     while window.running{
         window.get_events();
 
-        if window.input.get_mouse_scroll() < 0.0 {
-            println!("gracias");
-        }
+        /*if window.input.get_mouse_scroll() < 0.0 {
+            let mut zoom = camera.get_scale();
+            zoom -= 0.01;
+            camera.set_scale(zoom);
+        }*/
 
         if window.input.is_key_released(glutin::VirtualKeyCode::A){
-            quad.set_color([0.5,0.0,0.0]);
+            camera.move_camera(50.0,0.0);
         }
         window.set_camera(&camera);
         window.render(&mut quad);
-       // window.render();
+
         window.display();
     }
     println!("Hello, world!");

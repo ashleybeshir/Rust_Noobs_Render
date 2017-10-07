@@ -2,7 +2,7 @@
 This a 2d renderer that is similar to sfml.
 Uses glutin for window and gfx rs for rendering.
 ## Purpose of this cargo
-Making a high abstraction library for 2d games. 
+Making a high abstraction library for 2d games. Trying to simplify the process for the programmer. So for simple games not much hacking has to be done.
 
 ### To-Do(can change)
 * [x] Simplified window system 
@@ -14,4 +14,5 @@ Making a high abstraction library for 2d games.
 * [ ] Colour support
 * [ ] Texture support
 * [ ] Multiple camera support
+* [ ] Text Support
 
