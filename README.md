@@ -8,10 +8,10 @@ Making a high abstraction library for 2d games. Trying to simplify the process f
 * [x] Simplified window system 
 * [x] Input System
 * [x] Camera System
-* [ ] Basic Shape support (cube done)
+* [ ] Basic Shape support (cube,triangle done)
 * [ ] Sprite support
 * [ ] Custom Shape support
-* [ ] Colour support
+* [x] Colour support
 * [ ] Texture support
 * [ ] Multiple camera support
 * [ ] Text Support
