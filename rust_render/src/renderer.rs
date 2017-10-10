@@ -34,6 +34,11 @@ gfx_defines! {
         out: gfx::BlendTarget<ColorFormat> = ("Target0", gfx::state::MASK_ALL, gfx::preset::blend::ALPHA),
     }
 }
+pub enum RenderType{
+    shape,
+    line,
+    dot
+}
 
 #[derive(Clone, Debug)]
 pub struct GpuData{
@@ -68,7 +73,7 @@ impl Renderer{
             out_color : color,
             out_depth : depth,
             basic_shape_pso : basic_pos,
-            proj : cgmath::ortho(800.0,0.0,0.0,600.0,0.0,100.0),
+            proj : cgmath::ortho(0.0,800.0,0.0,600.0,0.0,100.0),
             view : cgmath::Matrix4::from_translation(cgmath::Vector3::new(0.0,0.0,0.0)),
         };
 
