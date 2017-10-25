@@ -1,3 +1,5 @@
+# On Hold
+This library will be on hold till new version of gfx rs comes out. Mainly because the whole api will be revamped.
 # 2D renderer for Rust
 This a 2d renderer that is similar to sfml.
 Uses glutin for window and gfx rs for rendering.
